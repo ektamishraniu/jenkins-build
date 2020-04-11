@@ -1,0 +1,50 @@
+
+{
+      "objects": [
+        {
+          "period": "1 days",
+          "name": "Every 1 day",
+          "id": "DefaultSchedule",
+          "type": "Schedule",
+          "startAt": "FIRST_ACTIVATION_DATE_TIME"
+        },
+        {
+          "resourceRole": "DataPipelineDefaultResourceRole",
+          "role": "DataPipelineDefaultRole",
+          "instanceType": "t2.micro",
+          "name": "EMR-test",
+          "id": "Ec2Instance",
+          "imageId": "ami-14c5486b",
+          "type": "Ec2Resource",
+          "associatePublicIpAddress": "true",
+          "terminateAfter": "1 hour"
+        },
+        {
+          "schedule": {
+            "ref": "DefaultSchedule"
+          },
+          "scriptUri": "s3://mys3buctransformationprocessproddtl001/buildtrigger/scripts/templated-emr-start.sh",
+          "name": "DefaultActivity1",
+          "id": "ActivityId_qyoFQ",
+          "maximumRetries": "0",
+          "runsOn": {
+            "ref": "Ec2Instance"
+          },
+          "type": "ShellCommandActivity"
+        },
+        
+        {
+          "failureAndRerunMode": "CASCADE",
+          "schedule": {
+            "ref": "DefaultSchedule"
+          },
+          "resourceRole": "DataPipelineDefaultResourceRole",
+          "role": "DataPipelineDefaultRole",
+          "pipelineLogUri": "s3://mys3buctransformationlogproddtl001/",
+          "scheduleType": "cron",
+          "name": "Default",
+          "id": "Default"
+        }
+      ],
+      "parameters": []
+    }
